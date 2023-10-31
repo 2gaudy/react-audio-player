@@ -16,20 +16,22 @@ const AudioPlayer = () => {
     const[timeProgress, setTimeProgress] = useState(0);
     const[duration, setDuration] = useState(0);
 
-
     const audioRef = useRef();
     console.log(audioRef)
 
     const progressBarRef = useRef();
 
     return(
-        <div className="audio-player">
-            <div className="inner">
-                <DisplayTrack {...{currentTrack, audioRef, setDuration, progressBarRef}}/>
-                <Controls {...{audioRef, progressBarRef, duration, setTimeProgress, tracks, trackIndex, setTrackIndex, setCurrentTrack}}/>
-                <ProgressBar {...{progressBarRef, audioRef, timeProgress, duration}}/>
+        <div className='wrapper'>
+            <div className="audio-player">
+                <div className="inner">
+                    <DisplayTrack {...{currentTrack, audioRef, setDuration, progressBarRef}}/>
+                    <Controls {...{audioRef, progressBarRef, duration, setTimeProgress, tracks, trackIndex, setTrackIndex, setCurrentTrack}}/>
+                    <ProgressBar {...{progressBarRef, audioRef, timeProgress, duration}}/>
+                </div>
             </div>
         </div>
+        
     );
 };
 
