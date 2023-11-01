@@ -11,6 +11,8 @@ import {
 
 const Controls = ({audioRef, progressBarRef, duration, setTimeProgress, tracks, trackIndex, setTrackIndex, setCurrentTrack}) => {
 
+    const [volume, setVolume] = useState(60);
+
     const playAnimationRef = useRef();
 
     const repeat = useCallback(() => {
@@ -29,6 +31,11 @@ const Controls = ({audioRef, progressBarRef, duration, setTimeProgress, tracks, 
     const [isPlaying , setIsPlaying] = useState(false)
 
     useEffect(() => {
+
+        if(audioRef){
+            audioRef.current.volume = volume / 100;
+        }
+
         if (isPlaying) {
             audioRef.current.play();
             
@@ -37,7 +44,7 @@ const Controls = ({audioRef, progressBarRef, duration, setTimeProgress, tracks, 
             
         }
         playAnimationRef.current = requestAnimationFrame(repeat)
-    }, [isPlaying, audioRef, repeat])
+    }, [isPlaying, audioRef, repeat, volume])
 
     const togglePlayPause = () => {
         setIsPlaying((prev) => !prev)
@@ -91,6 +98,10 @@ const Controls = ({audioRef, progressBarRef, duration, setTimeProgress, tracks, 
                 <button onClick={handleNext}>
                     <IoPlaySkipForwardSharp/>
                 </button>
+            </div>
+            <div className="volume">
+                <button>icons</button>
+                <input type="range" min={0} max={100} value={volume} onChange={(e) => setVolume(e.target.value)}/>
             </div>
         </div>
     )
