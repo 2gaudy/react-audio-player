@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback, useRef } from "react";
+import '../styles/Controls.css'
 
 import {
     IoPlayBackSharp,
@@ -6,12 +7,21 @@ import {
     IoPlaySkipBackSharp,
     IoPlaySkipForwardSharp,
     IoPlaySharp,
-    IoPauseSharp
+    IoPauseSharp,
+    
 } from 'react-icons/io5'
+
+
+import {
+    IoMdVolumeHigh,
+    IoMdVolumeLow,
+    IoMdVolumeOff
+} from 'react-icons/io'
 
 const Controls = ({audioRef, progressBarRef, duration, setTimeProgress, tracks, trackIndex, setTrackIndex, setCurrentTrack}) => {
 
     const [volume, setVolume] = useState(60);
+    const [muteVolume, setMuteVolume] = useState(false);
 
     const playAnimationRef = useRef();
 
@@ -34,6 +44,7 @@ const Controls = ({audioRef, progressBarRef, duration, setTimeProgress, tracks, 
 
         if(audioRef){
             audioRef.current.volume = volume / 100;
+            audioRef.current.muted = muteVolume;
         }
 
         if (isPlaying) {
@@ -44,7 +55,7 @@ const Controls = ({audioRef, progressBarRef, duration, setTimeProgress, tracks, 
             
         }
         playAnimationRef.current = requestAnimationFrame(repeat)
-    }, [isPlaying, audioRef, repeat, volume])
+    }, [isPlaying, audioRef, repeat, volume, muteVolume])
 
     const togglePlayPause = () => {
         setIsPlaying((prev) => !prev)
@@ -100,8 +111,20 @@ const Controls = ({audioRef, progressBarRef, duration, setTimeProgress, tracks, 
                 </button>
             </div>
             <div className="volume">
-                <button>icons</button>
-                <input type="range" min={0} max={100} value={volume} onChange={(e) => setVolume(e.target.value)}/>
+                <button onClick={() => setMuteVolume((prev) => !prev)}>
+                    {muteVolume || volume < 5 ? (
+                        <IoMdVolumeOff/>
+                    ) : volume < 40 ? (
+                        <IoMdVolumeLow/>
+                    ) : (
+                        <IoMdVolumeHigh/>
+                    )}
+                </button>
+                <input 
+                    className="volumeSlider" type="range" min={0} max={100} value={volume} onChange={(e) => setVolume(e.target.value)} 
+                    style={{
+                        background: `linear-gradient(to right, #f50 ${volume}%, #ccc ${volume}%)`,
+                    }}/>
             </div>
         </div>
     )

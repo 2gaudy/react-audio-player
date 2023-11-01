@@ -1,0 +1,9 @@
+.controls-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    margin: 1%;
+    width: 20%;
+    flex-direction: column;
+}
